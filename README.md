@@ -13,20 +13,16 @@ Welcome to the Dev repository! This repository is dedicated to showcasing my pro
 
 ## About
 
-This repository serves as a portfolio of my coding journey. From small code snippets to full-fledged projects, you'll find a variety of programming-related content here. Whether it's exploring new technologies, solving coding challenges, or sharing my learnings, this is the place to see it all.
+This repository serves as a portfolio of my coding journey. From small code snippets to full-fledged projects, you'll find various programming-related content here. Whether it's exploring new technologies, solving coding challenges, or sharing my learnings, this is the place to see it all.
 
 ## Projects
 
 Here are a few highlighted projects from this repository:
 
-1. **Project Name**
-   - Description: A brief description of the project, its purpose, and features.
+ **Project Name**
+   - Description: Welcome to the Dev repository, a space dedicated to showcasing my programming journey and sharing the world of code! This repository houses a collection of coding 
+     projects, experiments, and discoveries, all focusing on utilizing the powerful SFML library.
    - [Project Repository](https://github.com/atharva-0123-cs/dev)
-   - [Live Demo](https://your-live-demo-link.com) (if applicable)
-
-2. **Another Project**
-   - Description: Another project description goes here.
-   - [Project Repository](https://github.com/atharva-0123-cs/dev/another-project-folder)
 
 Feel free to explore the repository to discover more projects!
 
@@ -38,3 +34,18 @@ If you'd like to explore the code, contribute to a project, or use a code snippe
 
    ```bash
    git clone https://github.com/atharva-0123-cs/dev.git
+
+2. **Build and Run:**
+
+   build :
+   ```c++
+   make
+   ```
+   run :
+   ```c++
+   make run
+   ```
+3.**Output : **
+
+   ![Screenshot (12)](https://github.com/atharva-0123-cs/dev/assets/112416167/0d72b3c8-8d4d-4b01-ab6f-8586aee5ff20)
+
