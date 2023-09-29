@@ -1,79 +1,47 @@
 #include <SFML/Graphics.hpp>
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(640, 540), "SFML works!");                                           
-    sf::CircleShape circle(100.0f);
-    circle.setFillColor(sf::Color::Green);
 
-    float speed = 5.0f;
+int main() {
+  sf::RenderWindow window(sf::VideoMode(640, 540),
+  "SFML works!", sf::Style::Default);
 
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+  //Circle
+  sf::CircleShape circle(50.0f);
+  circle.setFillColor(sf::Color::Green);
 
-	// Keyboard Input
-	 if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-            circle.move(0, -speed);
+  //Rectangle
+  sf::RectangleShape rectangle(sf::Vector2f(100, 50));
+  rectangle.setPosition(30,30);
+  rectangle.setFillColor(sf::Color::Cyan);
 
-	 if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-            circle.move(0, speed);
 
-         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            circle.move(-speed, 0);
+  float speed = 5.0f;
 
-         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            circle.move(speed, 0);
-
-        window.clear();
-        window.draw(circle);
-        window.display();
+  while (window.isOpen()) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+      if (event.type == sf::Event::Closed)
+        window.close();
     }
 
-    return 0;
+    // Keyboard Input
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+      circle.move(0, -speed);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+      circle.move(0, speed);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+      circle.move(-speed, 0);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+      circle.move(speed, 0);
+
+    window.clear();
+    window.draw(circle);
+    window.draw(rectangle);
+    window.display();
+  }
+
+  return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
