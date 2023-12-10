@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 
-
 class Game {
 private:
   sf::RenderWindow mWindow;
@@ -15,65 +14,58 @@ private:
   void processEvents();
   void update();
   void render();
-
 };
 
-Game::Game() : mWindow(sf::VideoMode(640, 480), 
-"SFML SPACE"), mPlayer()
-{
+Game::Game() : mWindow(sf::VideoMode(640, 480), "SFML SPACE"), mPlayer() {
   mPlayer.setRadius(40.f);
-  mPlayer.setPosition(100.f,100.f);
+  mPlayer.setPosition(100.f, 100.f);
   mPlayer.setFillColor(sf::Color::Cyan);
 }
 
 // processEvents
-void Game::processEvents()
-{
+void Game::processEvents() {
   sf::Event event;
-  while(mWindow.pollEvent(event)){
-    if(event.type == sf::Event::Closed){
+  while (mWindow.pollEvent(event)) {
+    if (event.type == sf::Event::Closed) {
       mWindow.close();
     }
+
+    // 
   }
 }
 
 // update
-void Game::update()
-{
-   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-      mPlayer.move(0, -speed);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-      mPlayer.move(0, speed);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-      mPlayer.move(-speed, 0);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-      mPlayer.move(speed, 0);
+void Game::update() {
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    mPlayer.move(0, -speed);
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    mPlayer.move(0, speed);
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    mPlayer.move(-speed, 0);
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    mPlayer.move(speed, 0);
 }
 
-void Game::render(){
+void Game::render() {
   mWindow.clear();
   mWindow.draw(mPlayer);
   mWindow.display();
 }
 
 // run
-void Game::run()
-{
+void Game::run() {
 
-  while (mWindow.isOpen())
-  {
-      processEvents();
-      update();
-      render();
+  while (mWindow.isOpen()) {
+    processEvents();
+    update();
+    render();
   }
-
 }
-
 
 int main() {
 
-Game space;
-space.run();
+  Game space;
+  space.run();
 
   // sf::RenderWindow window(sf::VideoMode(640, 540), "SFML Space Game",
   //                         sf::Style::Default);
