@@ -3,11 +3,8 @@
 #include "Entity.h"
 #include "Vec2.h"
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Color.hpp>
 #include<iostream>
 #include <math.h>
-#include <memory>
-
 
 
 Game::Game(const std::string& config)
@@ -32,6 +29,10 @@ void Game::init(const std::string& path)
     m_text.setFont(m_font);
     m_text.setPosition(24.f,24.f);
     m_text.setCharacterSize(16.f);
+
+    m_scoreText.setFont(m_font);
+    m_scoreText.setPosition(24.f,52.f);
+    m_scoreText.setCharacterSize(16.f);
 
     spawnPlayer();
     
@@ -59,9 +60,9 @@ void Game::run()
             sMovement();
             sCollision();
             sLifespan();
-            sUserInput();
         }
 
+        sUserInput();
         sRender();
 
         // Update frame count
@@ -94,7 +95,7 @@ void Game::run()
 
 void Game::setPaused(bool paused)
 {
-    m_pused = true;
+    m_pused = paused;
 }
 
 // respawn the player in the middle of the screem
@@ -211,6 +212,8 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
             outlineColor,
             outlineThickness
         );
+        smallEnemies->cLifespan = std::make_shared<CLifespan>(38);
+
     }
 }
 
@@ -232,7 +235,7 @@ void Game::spawnBullet(std::shared_ptr<Entity>& e, const Vec2& target)
     // std::cout<<angle<<"\n";
 
     bullet->cTransform = std::make_shared<CTrasform>(e->cTransform->pos, velocity, 0);
-    bullet->cShape = std::make_shared<CShape>(4, 32, sf::Color(255,255,255), sf::Color(255,255,255), 2);
+    bullet->cShape = std::make_shared<CShape>(4, 32, sf::Color(255,255,255,255), sf::Color(255,255,255 , 255), 2);
 
     bullet->cLifespan = std::make_shared<CLifespan>(80);
 }
@@ -338,9 +341,12 @@ void Game::sMovement()
         }
 
         if(e->cLifespan->remaining > 0)
-        {   
-            e->cShape->circle.setFillColor(sf::Color(255,255,255, e->cLifespan->remaining));
+        {        
             e->cLifespan->remaining -= 1;
+             e->cShape->circle.setFillColor(sf::Color(255,255,255,
+         128 + e->cLifespan->remaining ));
+         e->cShape->circle.setOutlineColor(sf::Color(255,255,255,
+         128 + e->cLifespan->remaining ));
         }
 
         if(e->cLifespan->remaining <= 0)
@@ -378,6 +384,7 @@ void Game::sMovement()
                 spawnSmallEnemies(e);
                 e->destroy();
                 b->destroy();
+                m_score++;
             }
         }
 
@@ -399,6 +406,7 @@ void Game::sMovement()
 
                 m_player->cTransform->pos.x = mx;
                 m_player->cTransform->pos.y = my;
+                m_score = 0;
             }
     }
 
@@ -447,23 +455,25 @@ void Game::sRender()
     for(auto& e : enemies)
     {
         m_window.draw(e->cShape->circle);
-
     }
 
     for(auto& b : bullets)
     {
-         b->cShape->circle.setPosition(b->cTransform->pos.x, b->cTransform->pos.y);
+         b->cShape->circle.setPosition(b->cTransform->pos.x, b->cTransform->pos.y);   
     }
     
     for(auto& b : bullets)
     {
         m_window.draw(b->cShape->circle);
-
     }
+
+    m_scoreText.setString("SCORE : " + std::to_string(static_cast<int>(m_score)));
+    m_window.draw(m_scoreText);
 
     m_window.draw(m_player->cShape->circle);
     m_window.draw(m_text);
 
+    
     for(auto& smallEnemie : m_entities.getEntities("smallEnemies"))
     {
         smallEnemie->cShape->circle.setPosition(smallEnemie->cTransform->pos.x,
@@ -548,6 +558,12 @@ void Game::sUserInput()
                     // std::cout<<"W is relased"<<"\n";
                     m_player->cInput->right = false;
                     break;
+                case sf::Keyboard::P :
+                    if(m_pused){
+                        setPaused(false);
+                    }else{
+                        setPaused(true);
+                    }
 
                 default: break;
             }
