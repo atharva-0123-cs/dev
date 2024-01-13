@@ -1,0 +1,10 @@
+{
+    "makefile.makefilePath": "./goemetry-wars",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/atharva/gameDev/dev/build",
+            "binaryPath": "/home/atharva/gameDev/dev/build/final_program",
+            "binaryArgs": []
+        }
+    ]
+}
