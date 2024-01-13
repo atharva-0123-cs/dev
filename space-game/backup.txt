@@ -17,18 +17,75 @@ namespace SoundBuffers
  enum ID { Distortion3};
 }
 
+class TextureHolder
+{
+  private:
+    std::map<Textures::ID,
+    std::unique_ptr<sf::Texture>> mTextureMap;
+
+  public:
+    void load(Textures::ID id, const std::string &filename);
+    sf::Texture& get(Textures::ID id);
+    const sf::Texture& get(Textures::ID id) const;
+
+};
+
+void TextureHolder::load(Textures::ID id, const std::string &filename){
+
+/* TODO 01 : We first create a sf::Texture object and store it in the unique pointer. */
+
+  std::unique_ptr<sf::Texture> texture(new sf::Texture());
+
+/* TODO 02 : Then, we load the texture from the given filename. */
+
+  if (!texture->loadFromFile(filename))
+  {
+    throw std::runtime_error("TextureHolder::load - Failed to load " + filename);
+  }
+
+/* TODO 02 : After loading,we can insert the texture to the map mTextureMap. */
+
+/*
+The member function std::map::insert() returns a pair with an iterator to the inserted element
+and a Boolean value which is true if inserting was successful. We store this returned
+pair and check its second member (the Boolean value). Instead of writing std::pa
+ir<std::map<Textures::ID, std::unique_ptr<sf::Texture>>::iterator,
+bool>, we can use C++11 type inference
+*/
+
+  auto inserted = mTextureMap.insert(std::make_pair(id, std::move(texture)));
+  assert(inserted.second);
+
+}
+
+/*
+Write a method get() that returns a reference to a texture. The method has one
+parameter, namely the identifier for the resource
+*/
+
+sf::Texture& TextureHolder::get(Textures::ID id){
+
+/* The method std::map::find() returns an iterator to the found element, or end() if
+nothing is found. Since the iterator points to a std::pair<const Textures::ID,
+std::unique_ptr<sf::Texture>>, we have to access its second member to get the
+unique pointer, and dereference it to get the texture */
+
+  auto found = mTextureMap.find(id);
+  assert(found != mTextureMap.end());
+
+  return *found->second;
+
+}
+
 
 class Game {
 private:
   sf::RenderWindow mWindow;
+
   // sf::CircleShape mPlayer;
   // sf::Texture mTexture;
-
   sf::Sprite mPlayer;
-  ResourceHolder<sf::Texture , Textures::ID > textures;
-
-  sf::Text mText;
-  ResourceHolder<sf::Font , Fonts::ID > fonts;
+  TextureHolder textures;
   
 
 private:
@@ -54,15 +111,13 @@ private:
 
 };
 
-Game::Game()  : 
+Game::Game() : 
     mWindow(sf::VideoMode(640, 480), "SFML SPACE")
     // ,mTexture() 
     ,mPlayer()
-    ,mText()
 {
 
   textures.load(Textures::Airplane,"Media/Textures/spaceship.png");
-  fonts.load(Fonts::DoctorGlitch,"Media/Fonts/DoctorGlitch.otf");
   // textures.load(Textures::Airplane,"Media/Textures/spaceship.png"); --> assert test
 
   // if (!mTexture.loadFromFile("Media/Textures/spaceship.png"))
@@ -73,10 +128,6 @@ Game::Game()  :
 
   mPlayer.setTexture(textures.get(Textures::Airplane));
   mPlayer.setPosition(400.f, 400.f);
-
-  mText.setFont(fonts.get(Fonts::DoctorGlitch));
-  mText.setString("Space Game");
-  mText.setPosition(100.f,100.f);
 
   
 
@@ -132,22 +183,23 @@ void Game::handelPlayerInput(sf::Keyboard::Key key, bool isPressed){
 
 
 // update
-void Game::update(sf::Time deltaTime) {
-  sf::Vector2f movement(0.f, 0.f);
+void Game::update(sf::Time deltaTime) 
+{
+sf::Vector2f movement(0.f, 0.f);
 
-  if (mIsMovingUp)
-    movement.y -= speed;
+ if (mIsMovingUp)
+  movement.y -= speed;
 
-  if (mIsMovingDown)
-    movement.y += speed;
+ if (mIsMovingDown)
+   movement.y += speed;
 
-  if (mIsMovingLeft)
-    movement.x -= speed;
+ if (mIsMovingLeft)
+  movement.x -= speed;
 
-  if (mIsMovingRight)
-    movement.x += speed;
+ if (mIsMovingRight)
+  movement.x += speed;
 
-  mPlayer.move(movement * deltaTime.asSeconds());
+ mPlayer.move(movement * deltaTime.asSeconds());
 
   /*
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -164,11 +216,8 @@ void Game::update(sf::Time deltaTime) {
 void Game::render() 
 {
   mWindow.clear();
-
-  mWindow.draw(mText);
   mWindow.draw(mPlayer);
   // mWindow.draw(mImage);
-
   mWindow.display();
 }
 

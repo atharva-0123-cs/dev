@@ -1,13 +1,23 @@
+# This is a comment line
+CC=g++
+# CFLAGS will be the options passed to the compiler.
+CFLAGS=-c –Wall
+OBJECTS = space.o
+SFML_FLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
-build:
-	
-	 g++ -c space.cpp
+
+all: space-app	
+		
+space-app: space.o Makefile
+	$(CC) $(OBJECTS) -o space-app $(SFML_FLAGS)
+
+
+%.o : %.cpp
+	g++ -c $<
 
 run :
-
-	 g++ space.o -o space-app -lsfml-graphics -lsfml-window -lsfml-system
-
 	./space-app
+
 clean :
 	rm -f space.o space-app
        	
