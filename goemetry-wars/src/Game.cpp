@@ -17,7 +17,7 @@ void Game::init(const std::string& path)
     // TODO : read in the file here
     // use premade  PlayerConfig, EnemyConfig, BulletConfig
 
-    // setup default wondow parameters
+    // setup default window parameters
     m_window.create(sf::VideoMode(720,480), "Assignment2");
     m_window.setFramerateLimit(60);
 
