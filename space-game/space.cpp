@@ -17,12 +17,15 @@ namespace SoundBuffers
  enum ID { Distortion3};
 }
 
+// this is comment for the first commit for PR 
+
 
 class Game {
 private:
   sf::RenderWindow mWindow;
   // sf::CircleShape mPlayer;
   // sf::Texture mTexture;
+  
 
   sf::Sprite mPlayer;
   ResourceHolder<sf::Texture , Textures::ID > textures;
